@@ -34,6 +34,7 @@ func run() error {
 
 	s := &service{db: db}
 
+	log.Println("Listening and serving HTTP on :8080")
 	err = http.ListenAndServe(":8080", s)
 	if err != nil {
 		return err
