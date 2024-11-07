@@ -2,16 +2,16 @@ tag ?= latest
 clean-cmd = docker compose down --remove-orphans --volumes
 
 docker-image:
-	IMAGE_TAG=$(tag) docker compose build prod
+	IMAGE_TAG=$(tag) docker compose --profile prod build prod
 
 push-docker-image:
-	IMAGE_TAG=$(tag) docker compose push prod
+	IMAGE_TAG=$(tag) docker compose --profile prod push prod
 
 dev:
-	docker compose up --build dev database --watch
+	docker compose --profile dev up --build --watch database dev
 
 prod:
-	docker compose up --build prod
+	docker compose --profile prod up database prod
 
 clean:
 	$(clean-cmd)

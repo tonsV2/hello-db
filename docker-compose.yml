@@ -13,6 +13,8 @@ services:
     depends_on:
       database:
         condition: service_healthy
+    profiles:
+      - prod
 
   dev:
     build:
@@ -42,6 +44,8 @@ services:
     depends_on:
       database:
         condition: service_healthy
+    profiles:
+      - dev
 
   database:
     image: postgres:13-alpine
@@ -57,3 +61,6 @@ services:
       interval: 3s
       timeout: 3s
       retries: 5
+    profiles:
+      - dev
+      - prod
