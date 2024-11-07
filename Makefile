@@ -8,9 +8,7 @@ push-docker-image:
 	IMAGE_TAG=$(tag) docker compose push prod
 
 dev:
-	docker compose up database -d
-	sleep 3
-	docker compose up --build dev database
+	docker compose up --build dev database --watch
 
 prod:
 	docker compose up --build prod
