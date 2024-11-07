@@ -1,7 +1,7 @@
 tag ?= latest
 clean-cmd = docker compose down --remove-orphans --volumes
 
-docker-image:
+build-docker-image:
 	IMAGE_TAG=$(tag) docker compose --profile prod build prod
 
 push-docker-image:
