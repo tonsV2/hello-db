@@ -48,7 +48,7 @@ services:
       - dev
 
   database:
-    image: postgres:13-alpine
+    image: postgres:17-alpine
     ports:
       - "5432:5432"
     environment:
