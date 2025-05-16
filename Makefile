@@ -8,10 +8,10 @@ push-docker-image:
 	IMAGE_TAG=$(tag) docker compose --profile prod push prod
 
 dev:
-	docker compose --profile dev up --build --watch database dev
+	docker compose -f docker-compose.base.yml -f docker-compose.dev.yml up --build --watch
 
 prod:
-	docker compose --profile prod up database prod
+	docker compose -f docker-compose.base.yml -f docker-compose.prod.yml up -d
 
 clean:
 	$(clean-cmd)

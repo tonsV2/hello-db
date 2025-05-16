@@ -1,0 +1,15 @@
+services:
+  database:
+    image: postgres:17-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    healthcheck:
+      test: [ "CMD-SHELL", "psql --no-password --quiet --username $$POSTGRES_USER postgres://127.0.0.1/$$POSTGRES_DB -p 5432 --command \"SELECT 'ok'\" > /dev/null" ]
+      start_period: 5s
+      interval: 3s
+      timeout: 3s
+      retries: 5
