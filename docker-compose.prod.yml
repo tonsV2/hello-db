@@ -20,19 +20,32 @@ services:
       database:
         condition: service_healthy
 
+  traefik-init:
+    image: alpine:3.22
+    volumes:
+      - cert:/cert:rw
+      - ./init-cert.sh:/init-cert.sh:ro
+    command: [ "/init-cert.sh" ]
+
   traefik:
     image: traefik:v3.0
+    depends_on:
+      traefik-init:
+        condition: service_completed_successfully
     command:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--providers.docker=true"
       - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
       - "--certificatesresolvers.letsencrypt.acme.email=${LETSENCRYPT_EMAIL}"
-      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/cert/acme.json"
       - "--log.level=INFO"
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./letsencrypt:/letsencrypt"
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - cert:/cert:rw
+
+volumes:
+  cert: {}
